@@ -178,6 +178,16 @@
         result = result || this.hasMinorDiagonalConflictAt(i);
       }
       return result;
+    },
+
+    // returns an array of arrays each representing a row on the board
+    getArray: function () {
+      var results = [];
+      var size = this.get('n');
+      for (var i = 0; i < size; i++) {
+        results.push(this.get(i));
+      }
+      return results;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/

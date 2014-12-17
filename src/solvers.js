@@ -14,17 +14,24 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  var board = new Board({n: n});
+  for (var i = 0; i < n; i++) {
+    var row = board.get(i);
+    row[i] = 1;
+    board.set(i, row);
+  }
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  return board.getArray();
 };
 
 
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 1;
+  for(var i = 1; i<=n; i++){
+    solutionCount *= i;
+  }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
