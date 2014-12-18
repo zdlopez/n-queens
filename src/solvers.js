@@ -190,3 +190,22 @@ window.countNQueensSolutions = function(n) {
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+window.countNQueensSolutionsBitwise = function (n) {
+  var count = 0;
+  var all = Math.pow(2, n) - 1;
+
+  var iterator = function(ld, cols, rd){
+    if(cols === all){
+      return count++;
+    }
+    var pos = ~(ld | cols | rd) & all;
+    while(pos){
+      var bit = pos & -pos;
+      pos -= bit;
+      iterator((ld|bit)<<1, (cols|bit), (rd|bit)>>1);
+    }
+  }
+  iterator(0,0,0);
+  return count;
+};
