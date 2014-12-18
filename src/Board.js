@@ -50,6 +50,7 @@
       );
     },
 
+    // O(n^2) time complexity
     hasAnyQueensConflicts: function() {
       return this.hasAnyRooksConflicts() || this.hasAnyMajorDiagonalConflicts() || this.hasAnyMinorDiagonalConflicts();
     },

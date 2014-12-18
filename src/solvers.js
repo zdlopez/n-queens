@@ -52,6 +52,7 @@ window.makeNQueensSolution = function(n) {
       currentRowSlots.push(0);
     }
 
+
     for (var row = 0; row < helper.length; row++ ){
       var col = helper[row];
       //set offlimits column based on previously occupied column
