@@ -197,7 +197,7 @@ window.countNQueensSolutionsBitwise = function (n) {
 
   var iterator = function(ld, cols, rd){
     if(cols === all){
-      return count++;
+      count++;
     }
     var pos = ~(ld | cols | rd) & all;
     while(pos){
@@ -209,3 +209,5 @@ window.countNQueensSolutionsBitwise = function (n) {
   iterator(0,0,0);
   return count;
 };
+
+function q(n){x=0,a=(1<<n)-1;function i(l,c,r){if(c==a)x++;var p=~(l|c|r)&a,b;for(;p;p-=b){b=p&-p;i((l|b)<<1,c|b,(r|b)>>1)}}i();return x}
