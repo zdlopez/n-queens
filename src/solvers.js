@@ -46,32 +46,27 @@ window.makeNQueensSolution = function(n) {
   var results = [];
 
   var testRow = function(helper){
-    var currentRowSlots = [];
-    // 0 is open, 1 is off-limits
-    for(var i = 0; i < n; i++){
-      currentRowSlots.push(0);
-    }
-
+    var currentRowSlots = 0;
 
     for (var row = 0; row < helper.length; row++ ){
       var col = helper[row];
       //set offlimits column based on previously occupied column
-      currentRowSlots[col] = 1;
+      currentRowSlots |= (1 << col);
       var diff = helper.length - row;
       var left = col - diff;
       var right = col + diff;
       if(left >= 0){
-        currentRowSlots[left] = 1;
+        currentRowSlots |= (1 << left);
       }
       if(right < n){
-        currentRowSlots[right] = 1;
+        currentRowSlots |= (1 << right);
       }
 
     }
 
     //iterating through currentSlots to find the open positions and place the queens
     for (var i = 0; i < n; i++ ){
-      if(currentRowSlots[i] === 0){
+      if( !(currentRowSlots & (1 << i))){
         if(helper.length < n-1){
           testRow(helper.concat(i));
         } else {
