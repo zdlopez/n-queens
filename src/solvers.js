@@ -41,18 +41,18 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.makeNQueensSolution = function(n) {
-  var solution = undefined;
   var helper = [];
   var results = [];
 
   var testRow = function(helper){
     var currentRowSlots = 0;
+    var helperLength = helper.length;
 
-    for (var row = 0; row < helper.length; row++ ){
+    for (var row = 0; row < helperLength; row++ ){
       var col = helper[row];
       //set offlimits column based on previously occupied column
       currentRowSlots |= (1 << col);
-      var diff = helper.length - row;
+      var diff = helperLength - row;
       var left = col - diff;
       var right = col + diff;
       if(left >= 0){
@@ -61,26 +61,87 @@ window.makeNQueensSolution = function(n) {
       if(right < n){
         currentRowSlots |= (1 << right);
       }
-
     }
-
     //iterating through currentSlots to find the open positions and place the queens
     for (var i = 0; i < n; i++ ){
       if( !(currentRowSlots & (1 << i))){
-        if(helper.length < n-1){
+        if(helperLength < n-1){
           testRow(helper.concat(i));
         } else {
           return results.push(helper.concat(i));
         }
       }
     }
-
-  };
-
+   };
   testRow(helper);
-
   return results;
 };
+
+window.makeNQueensIteratively = function(n) {
+  var helpers = [];
+  var results = [];
+
+  for (var i = 0; i < n; i++) {
+    helpers.push([i]);
+  }
+
+  for (var boardRow = 1; boardRow < n; boardRow++) {
+
+    // console.log(JSON.stringify(helpers));
+
+    var filters = [];
+    for (var i = 0; i < helpers.length; i++){
+      var helper = helpers[i];
+      var helperLength = helper.length;
+      var currentRowSlots = 0;
+
+      for (var row = 0; row < helperLength; row++ ){
+        var col = helper[row];
+        //set offlimits column based on previously occupied column
+        currentRowSlots |= (1 << col);
+        var diff = helperLength - row;
+        var left = col - diff;
+        var right = col + diff;
+        if(left >= 0){
+          currentRowSlots |= (1 << left);
+        }
+        if(right < n){
+          currentRowSlots |= (1 << right);
+        }
+      }
+      filters.push(currentRowSlots);
+    }
+
+    var newHelpers = [];
+
+    for (var index = 0; index < filters.length; index++) {
+      var filter = filters[index];
+      var temp = filter;
+      // console.log(filter.toString(2));
+      // console.log('old filter', filter);
+      if ( temp ^= (n*n-1) ) {
+
+        for (var j = 0; j < n; j++ ){
+          if( !(filter & (1 << j))){
+            if(helperLength < n-1){
+              // console.log('add ', j, 'when filter = ', filter.toString(2));
+              newHelpers.push(helpers[index].concat(j));
+            } else {
+              results.push(helpers[index].concat(j));
+            }
+          }
+        }
+
+      }
+    }
+
+    helpers = newHelpers.slice();
+
+  } // boardRow for loop
+
+  return results;
+
+}; /// Function
 
 
 window.findNQueensSolution = function(n) {
